@@ -34,8 +34,9 @@ class QapImgEnv(gym.Env):
         # contatore delle mosse effettuate
         self.count = 0
         # Inizializza la matrice dei prodotti
-        path = os.getenv("HOME")+"/prodLocFolder/prodLocFile"+str(self.num_prod)+".txt"
-        self.matrix_pl = self.get_location_matrix(path,self.num_prod)
+        self.matrix_pl = np.zeros((self.num_prod, self.num_loc), int)
+        np.fill_diagonal(self.matrix_pl,1)
+        np.random.shuffle(np.transpose(self.matrix_pl))
         #inizializza matrice delle distanze tra locazioni (e' quadrata simmetrica e sulla diagonale c'e' la distanza con l'uscita)
         self.matrix_dist = np.zeros((self.num_loc, self.num_loc), int)
         for i in range(0,self.num_loc):
@@ -114,17 +115,3 @@ class QapImgEnv(gym.Env):
         matrix_wd = matrix_dp*self.matrix_fq
         mff_sum = np.sum(matrix_wd)
         return mff_sum
-
-
-    def get_location_matrix(self,path,num_prod):
-        prod_loc_matrix = np.zeros((num_prod,num_prod), int)
-        file = open(path,"r")
-        line = file.readline()
-        for i in range(num_prod):
-            k = [int(s) for s in line.split() if s.isdigit()]
-            p1 = k[0]
-            p2 = k[1]
-            prod_loc_matrix[p1,p2] = 1
-            line = file.readline()
-        file.close()
-        return prod_loc_matrix
