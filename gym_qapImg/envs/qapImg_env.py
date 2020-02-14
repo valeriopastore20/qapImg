@@ -94,7 +94,7 @@ class QapImgEnv(gym.Env):
         self.count+=1
         if(self.count > self.num_prod+10):
             done = True
-        return np.reshape(self.matrix_wd,(self.num_prod,self.num_prod,1)), reward, done, {}
+        return np.reshape(self.matrix_wd,(self.num_prod,self.num_prod,1)), reward.item(), done, {}
 
 
 # UTILITY METHODS
