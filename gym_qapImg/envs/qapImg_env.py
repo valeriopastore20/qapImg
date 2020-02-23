@@ -59,9 +59,16 @@ class QapImgEnv(gym.Env):
 
 
         self.mff_sum = self.compute_mff_sum(matrix_dp)
+        self.done = False
 
     def reset(self):
-        self.__init__()
+        matrix_dp = np.dot(np.dot(self.matrix_pl,self.matrix_dist),np.transpose(self.matrix_pl))
+        self.matrix_wd = matrix_dp*self.matrix_fq
+        self.current_sum = np.sum(self.matrix_wd)
+        self.initial_sum = self.current_sum
+        self.mff_sum = self.compute_mff_sum(matrix_dp)
+        self.count = 0
+        self.done = False
         return np.reshape(self.matrix_wd,(self.num_prod,self.num_prod,1))
 
 
@@ -77,7 +84,6 @@ class QapImgEnv(gym.Env):
         print("R E N D E R")
 
     def step(self,actionKey):
-        done = False
         #converte il valore dell'action nella corrispondente azione
         action = self.dict[actionKey]
         # effettua lo swap sulla matrice di prodotto e ricalcola la matrice finale
@@ -93,8 +99,8 @@ class QapImgEnv(gym.Env):
         self.current_sum = sum
         self.count+=1
         if(self.count > self.num_prod+10):
-            done = True
-        return np.reshape(self.matrix_wd,(self.num_prod,self.num_prod,1)), reward.item(), done, {}
+            self.done = True
+        return np.reshape(self.matrix_wd,(self.num_prod,self.num_prod,1)), reward.item(), self.done, {}
 
 
 # UTILITY METHODS
