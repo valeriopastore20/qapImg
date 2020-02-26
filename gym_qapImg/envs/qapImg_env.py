@@ -2,7 +2,7 @@ import gym
 import numpy as np
 import fis_generator as fisg
 import os
-
+import sys
 from gym import spaces
 
 class QapImgEnv(gym.Env):
@@ -17,7 +17,7 @@ class QapImgEnv(gym.Env):
 
     def __init__(self):
         #genera e legge i frequent item sets
-        path = os.getenv("HOME")+"/fisFolder/fisFile100.txt"
+        path = os.getenv("HOME")+"/fisFolder/fisFile"+str(sys.argv[1])+".txt"
         self.matrix_fq = fisg.readFisFile(path)
         self.matrix_fq = self.matrix_fq/np.max(self.matrix_fq)
         self.num_prod = len(self.matrix_fq)
