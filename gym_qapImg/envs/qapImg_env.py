@@ -45,7 +45,6 @@ class QapImgEnv(gym.Env):
         matrix_dp = np.dot(np.dot(self.matrix_pl,self.matrix_dist),np.transpose(self.matrix_pl))
         self.matrix_wd = matrix_dp*self.matrix_fq
         self.current_sum = np.sum(self.matrix_wd)
-        self.initial_sum = np.sum(self.matrix_wd)
         self.mff_sum = self.compute_mff_sum(matrix_dp)
         self.done = False
 
@@ -58,6 +57,7 @@ class QapImgEnv(gym.Env):
         np.random.shuffle(np.transpose(self.matrix_pl))
         matrix_dp = np.dot(np.dot(self.matrix_pl,self.matrix_dist),np.transpose(self.matrix_pl))
         self.matrix_wd = matrix_dp*self.matrix_fq
+        self.initial_sum = np.sum(self.matrix_wd)
         self.current_sum = np.sum(self.matrix_wd)
         self.count = 0
         return np.reshape(self.matrix_wd,(self.num_prod,self.num_prod,1))
