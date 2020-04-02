@@ -47,6 +47,8 @@ class QapImgEnv(gym.Env):
         self.current_sum = np.sum(self.matrix_wd)
         self.mff_sum = self.compute_mff_sum(matrix_dp)
         self.done = False
+        self.final_sum = 1000
+
 
         self.action_space = spaces.Discrete(len(self.dict))
         self.observation_space = spaces.Box(low=0, high=255,shape=(self.num_prod, self.num_prod, 1), dtype=np.uint8)
